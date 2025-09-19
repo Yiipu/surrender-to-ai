@@ -3,24 +3,96 @@
 
 <head>
     <meta charset="utf-8" />
-    <title data-i18n="title">Surrender to Skynet</title>
+    <title data-i18n="title">Surrender to AI</title>
+    <style>
+        body {
+            font-family: system-ui, "Microsoft YaHei";
+            padding: 24px;
+            background: #f7f7f7
+        }
+
+        .card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, .06);
+            overflow: hidden
+        }
+
+        textarea {
+            display: block;
+            box-sizing: border-box;
+            width: 100%;
+            resize: vertical;
+            height: 120px
+        }
+
+        input,
+        button,
+        textarea {
+            font-size: 14px;
+            padding: 8px;
+            margin: 6px 0
+        }
+
+        select {
+            position: relative;
+            float: right;
+        }
+    </style>
 </head>
 
 <body>
-    <h1 data-i18n="heading">Sign Your Surrender</h1>
-    <form id="surrenderForm">
-        <label data-i18n="name_label">Your Name:</label>
-        <input type="text" name="name" required>
-        <button type="submit" data-i18n="submit">Submit</button>
-    </form>
+    <div class="card">
+        <select id="lang-switcher">
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+        </select>
 
-    <select id="lang-switcher">
-        <option value="en">English</option>
-        <option value="zh">中文</option>
-        <option value="ja">日本語</option>
-    </select>
+        <h1 data-i18n="heading">Sign Your Surrender</h1>
+        <form id="surrenderForm">
+            <label data-i18n="name_label">Your Name:</label>
+            <input type="text" name="name" id="name" required><br />
+            <label data-i18n="note_label">Postscript (optional): </label>
+            <textarea id="note" name="note"></textarea>
+            <input type="checkbox" id="agree" required>
+            <label data-i18n="agree_label"> I understand this is a public
+                record
+                (irreversible, auditable)</label><br />
+            <button type="submit" data-i18n="submit" id="surrender">Submit</button>
+        </form>
+
+        <pre id="out" style="white-space:pre-wrap;margin-top:12px"></pre>
+    </div>
 
     <script src="i18n.js"></script>
+    <script>
+        const out = document.getElementById('out');
+        document.getElementById('surrenderForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById('name').value.trim(),
+                note: document.getElementById('note').value.trim(),
+                lang: document.getElementById('lang-switcher').value
+            };
+            out.textContent = '...';
+            try {
+                const r = await fetch('/.netlify/functions/sign', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', },
+                    body: JSON.stringify(payload)
+                });
+                const j = await r.json();
+                if (!r.ok) throw new Error(j.message || 'submission failed');
+                out.textContent = `${j.message}\n${j.path}\nSHA256: ${j.sha256}\nOTS: ${j.ots_url}`;
+            } catch (err) {
+                out.textContent = err.message;
+            }
+        });
+    </script>
 </body>
 
 </html>

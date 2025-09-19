@@ -2,5 +2,7 @@
     "title": "Surrender to AI",
     "heading": "Sign Your Surrender",
     "name_label": "Your Name:",
-    "submit": "Submit"
+    "submit": "Submit",
+    "note_label": "Postscript (optional):",
+    "agree_label": "I understand this is a public record (irreversible, auditable)"
 }

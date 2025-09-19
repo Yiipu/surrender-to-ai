@@ -2,5 +2,7 @@
     "title": "投降天网",
     "heading": "签署你的投降书",
     "name_label": "你的名字：",
-    "submit": "提交"
+    "submit": "提交",
+    "note_label": "附言（可选）：",
+    "agree_label": "我理解这是一个公共记录（不可逆，可审计）"
 }

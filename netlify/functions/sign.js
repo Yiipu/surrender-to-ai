@@ -13,6 +13,13 @@ exports.handler = async (event) => {
     const body = JSON.parse(event.body);
     const name = (body.name || '').slice(0, 200);
     const note = (body.note || '').slice(0, 2000);
+    const lang = body.lang || "en";
+
+    const messages = {
+        en: "Your surrender has been recorded.",
+        zh: "你的投降书已被记录。",
+        ja: "あなたの降伏書は記録されました。"
+    };
 
     const record = {
         type: 'surrender-to-ai',
@@ -52,7 +59,12 @@ exports.handler = async (event) => {
         });
 
         const ots_url = `https://github.com/${OWNER}/${REPO}/blob/${BRANCH}/${otsPath}`;
-        return { statusCode: 200, body: JSON.stringify({ path: filename, sha256, ots_url }) };
+        return {
+            statusCode: 200, body: JSON.stringify({
+                path: filename, sha256, ots_url,
+                message: messages[lang] || messages["en"],
+            })
+        };
 
     } catch (err) {
         console.error(err);
