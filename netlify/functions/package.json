@@ -1,0 +1,10 @@
+{
+    "name": "surrender-to-ai",
+    "version": "1.0.0",
+    "private": true,
+    "dependencies": {
+        "@octokit/rest": "^20.0.0",
+        "opentimestamps": "^0.4.0",
+        "js-base64": "^3.7.7"
+    }
+}

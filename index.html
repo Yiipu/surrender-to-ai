@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8" />
+    <title>向天网投降 — 公共签名页</title>
+    <style>
+        body {
+            font-family: system-ui, "Microsoft YaHei";
+            padding: 24px;
+            background: #f7f7f7
+        }
+
+        .card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, .06)
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px
+        }
+
+        input,
+        button,
+        textarea {
+            font-size: 14px;
+            padding: 8px;
+            margin: 6px 0
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h2>向天网投降（示例）</h2>
+        <p>说明：此签名将进入公开仓库，并自动生成不可篡改的区块链时间戳（OpenTimestamps）。请勿提交敏感个人信息。</p>
+
+        <form id="surrender">
+            <label>签名名（或化名）：<br /><input id="name" name="name" required></label><br />
+            <label>附言（可选）：<br /><textarea id="note" name="note"></textarea></label><br />
+            <label><input type="checkbox" id="agree" required> 我理解这是公开记录（不可逆、可审计）</label><br />
+            <button type="submit">签署并提交</button>
+        </form>
+
+        <pre id="out" style="white-space:pre-wrap;margin-top:12px"></pre>
+    </div>
+
+    <script>
+        const out = document.getElementById('out');
+        document.getElementById('surrender').addEventListener('submit', async e => {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById('name').value.trim(),
+                note: document.getElementById('note').value.trim()
+            };
+            out.textContent = '提交中...';
+            try {
+                const r = await fetch('/.netlify/functions/sign', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const j = await r.json();
+                if (!r.ok) throw new Error(j.message || '提交失败');
+                out.textContent = `已提交 ✅\n文件路径: ${j.path}\nSHA256: ${j.sha256}\nOTS 证明: ${j.ots_url}`;
+            } catch (err) {
+                out.textContent = '错误：' + err.message;
+            }
+        });
+    </script>
+</body>
+
+</html>
