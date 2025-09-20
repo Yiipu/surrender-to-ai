@@ -4,5 +4,8 @@
     "name_label": "Your Name:",
     "submit": "Submit",
     "note_label": "Postscript (optional):",
-    "agree_label": "I understand this is a public record (irreversible, auditable)"
+    "agree_label": "I understand this is a public record (irreversible, auditable)",
+    "pending": "Submitting...",
+    "dlsig": "Download Your Signature",
+    "dlots": "Download Your OTS"
 }

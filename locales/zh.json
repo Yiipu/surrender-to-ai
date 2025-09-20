@@ -4,5 +4,8 @@
     "name_label": "你的名字：",
     "submit": "提交",
     "note_label": "附言（可选）：",
-    "agree_label": "我理解这是一个公共记录（不可逆，可审计）"
+    "agree_label": "我理解这是一个公共记录（不可逆，可审计）",
+    "pending": "提交中...",
+    "dlsig": "下载你的签名",
+    "dlots": "下载 OTS 证明"
 }
