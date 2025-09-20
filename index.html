@@ -65,31 +65,58 @@
             <button type="submit" data-i18n="submit" id="surrender">Submit</button>
         </form>
 
-        <pre id="out" style="white-space:pre-wrap;margin-top:12px"></pre>
+        <div style="margin-top:12px">
+            <pre id="pending" style="display:none" data-i18n="pending">Submitting...</pre>
+            <a id="dlsig" style="display:none" data-i18n="dlsig">Download Your Signature</a>
+            <a id="dlots" style="display:none" data-i18n="dlots">Download Your OTS</a>
+        </div>
+
     </div>
 
     <script src="i18n.js"></script>
     <script>
-        const out = document.getElementById('out');
+        const dlots = document.getElementById('dlots');
+        const dlsig = document.getElementById('dlsig');
+        const pending = document.getElementById('pending');
+
         document.getElementById('surrenderForm').addEventListener('submit', async e => {
             e.preventDefault();
-            const payload = {
-                name: document.getElementById('name').value.trim(),
-                note: document.getElementById('note').value.trim(),
-                lang: document.getElementById('lang-switcher').value
+            const sign = {
+                type: 'surrender-to-ai',
+                name: document.getElementById('name').value.slice(0, 200).trim(),
+                note: document.getElementById('note').value.slice(0, 2000).trim(),
+                lang: document.getElementById('lang-switcher').value,
+                timestamp: new Date().toISOString()
             };
-            out.textContent = '...';
+            const content = JSON.stringify(sign, null, 2);
+            const sha256 = crypto.createHash('sha256').update(content).digest('hex');
+            const filename = `${sign.timestamp.replace(/[:.]/g, '-')}-${sha256.slice(0, 10)}.json`;
+            const b64 = Base64.encode(content);
+
+            const blob = new Blob([content], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            dlsig.href = url;
+            dlsig.download = filename;
+            dlsig.style.display = 'block';
+
             try {
                 const r = await fetch('/.netlify/functions/sign', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({ filename, sha256 })
                 });
                 const j = await r.json();
                 if (!r.ok) throw new Error(j.message || 'submission failed');
-                out.textContent = `${j.message}\n${j.path}\nSHA256: ${j.sha256}\nOTS: ${j.ots_url}`;
+                const otsBlob = new Blob([Base64.decode(j.ots_b64)], { type: 'application/octet-stream' });
+                const otsUrl = URL.createObjectURL(otsBlob);
+                dlots.href = otsUrl;
+                dlots.download = filename + '.ots';
+                dlots.style.display = 'inline';
+                pending.style.display = 'block';
+                pending.textContent = `OTS: ${j.ots_url}`;
             } catch (err) {
-                out.textContent = err.message;
+                pending.style.display = 'block';
+                pending.textContent = err.message;
             }
         });
     </script>
