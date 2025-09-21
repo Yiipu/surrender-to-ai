@@ -28,15 +28,19 @@ jobs:
         run: |
           updated=0
           find ots -name '*.ots' -print0 | while IFS= read -r -d '' f; do
-            (ots upgrade "$f" && updated=1) || echo "upgrade failed $f"
+            if ots upgrade "$f"; then
+              echo "Upgrade successful: $f"
+              updated=1
+            else
+              echo "Upgrade failed: $f"
+            fi
           done
           echo "UPDATED=$updated" >> $GITHUB_ENV
 
       - name: Commit updated OTS
-        if: env.UPDATED == '1'
         run: |
           git config user.name "OTS Bot"
-          git config user.email "ots-bot@users.noreply.github.com"
+          git config user.email "ots-bot@no-reply.com"
           git add ots/*.ots
-          git commit -m "chore: upgraded OTS proofs"
+          git commit -m "chore: upgraded OTS proofs" || echo "No changes to commit"
           git push
