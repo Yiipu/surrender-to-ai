@@ -67,8 +67,8 @@
 
         <div style="margin-top:12px">
             <a id="dlsig" style="display:none" data-i18n="dlsig">Download Your Signature</a>
-            <p id="pending" style="display:none" data-i18n="pending">Submitting...</p>
             <a id="dlots" style="display:none" data-i18n="dlots">Download Your OTS</a>
+            <p id="pending" style="display:none" data-i18n="pending">Submitting...</p>
         </div>
 
     </div>
@@ -92,7 +92,7 @@
             // 计算 SHA-256 哈希
             const sha256 = await computeSHA256(content);
             const filename = `${sign.timestamp.replace(/[:.]/g, '-')}-${sha256.slice(0, 10)}.json`;
-            const b64 = btoa(content); // 使用 btoa 编码 Base64
+            const b64 = btoa(toBinaryStr(content)); // 使用 btoa 编码 Base64
 
             const blob = new Blob([content], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -148,6 +148,12 @@
                 pending.textContent = err.message;
             }
         });
+
+        function toBinaryStr(str) {
+            const encoder = new TextEncoder();
+            const charCodes = encoder.encode(str);
+            return String.fromCharCode(...charCodes);
+        }
 
         // 计算 SHA-256 哈希的函数
         async function computeSHA256(content) {
