@@ -29,11 +29,12 @@ exports.handler = async (event) => {
     }
 
     try {
+        const otsPath = `ots/${filename}.ots`;
         // 提交 OTS 文件
         await octokit.rest.repos.createOrUpdateFileContents({
-            owner: OWNER, repo: REPO, path: `ots/${filename}.ots`,
+            owner: OWNER, repo: REPO, path: otsPath,
             message: `add ots proof for ${sha256.slice(0, 10)}`,
-            content: otsBytes.toString("base64"), branch: BRANCH,
+            content: Buffer.from(otsBytes).toString('base64'), branch: BRANCH,
             committer: { name: 'Surrender Bot', email: 'no-reply@example.com' }
         });
 
