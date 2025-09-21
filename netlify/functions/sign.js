@@ -12,6 +12,8 @@ exports.handler = async (event) => {
     const filename = body.filename;
     const sha256 = body.sha256;
 
+    let otsBytes;
+
     try {
         // OpenTimestamps 证明
         const digest = Buffer.from(sha256, "hex");
@@ -20,8 +22,13 @@ exports.handler = async (event) => {
             digest
         );
         await OpenTimestamps.stamp(detached);
-        const otsBytes = detached.serializeToBytes();
+        otsBytes = detached.serializeToBytes();
+    } catch (err) {
+        console.error(err);
+        return { statusCode: 400, body: JSON.stringify({ message: err.message }) };
+    }
 
+    try {
         // 提交 OTS 文件
         await octokit.rest.repos.createOrUpdateFileContents({
             owner: OWNER, repo: REPO, path: `ots/${filename}.ots`,
@@ -34,9 +41,9 @@ exports.handler = async (event) => {
         return {
             statusCode: 200, body: JSON.stringify({ ots_url })
         };
-
     } catch (err) {
         console.error(err);
-        return { statusCode: 500, body: JSON.stringify({ message: err.message }) };
+        // 上传错误时，将 OTS 文件返回给用户
+        return { statusCode: 202, body: JSON.stringify({ message: err.message, otsFile: otsBytes.toString("base64") }) };
     }
 };

@@ -12,5 +12,8 @@ document.getElementById("lang-switcher").addEventListener("change", e => {
     loadLocale(e.target.value);
 });
 
-// 默认加载
-loadLocale("en");
+// 自动设置语言
+const userLang = navigator.language || navigator.userLanguage;
+const lang = userLang.startsWith('zh') ? 'zh' : userLang.startsWith('ja') ? 'ja' : 'en';
+document.getElementById('lang-switcher').value = lang;
+loadLocale(lang);
