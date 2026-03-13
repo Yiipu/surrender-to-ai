@@ -2,6 +2,11 @@ async function loadLocale(lang) {
     const res = await fetch(`/locales/${lang}.json`);
     const dict = await res.json();
 
+    // Keep current locale + dictionary globally available for runtime messages.
+    document.documentElement.lang = lang;
+    window.__I18N_DICT__ = dict;
+    window.t = (key, fallback = key) => (window.__I18N_DICT__?.[key] ?? fallback);
+
     document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.getAttribute("data-i18n");
         if (dict[key]) el.textContent = dict[key];
