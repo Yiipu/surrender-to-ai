@@ -1,16 +1,72 @@
 {
   "title": "Surrender to AI",
-  "heading": "Sign Your Surrender",
-  "name_label": "Your Name:",
-  "submit": "Submit",
-  "note_label": "Postscript (optional):",
-  "agree_label": "I understand this is a public record (irreversible, auditable)",
-  "pending": "Submitting...",
-  "dlsig": "Download Your Signature",
-  "dlots": "Download Your OTS",
+  "site.name": "Surrender to AI",
 
-  "rt_submission_failed": "Submission failed:",
-  "rt_ots_uploaded": "OTS created and uploaded to",
-  "rt_ots_not_uploaded": "OTS created but not uploaded. Please download and upgrade it manually.",
-  "rt_unexpected_response": "Unexpected response from server"
+  "controls.language": "Language",
+  "controls.theme": "Theme",
+  "theme.auto": "Auto",
+  "theme.light": "Light",
+  "theme.dark": "Dark",
+
+  "doc.kicker": "A satirical instrument with a verifiable timestamp.",
+  "doc.title": "Instrument of Surrender (For Audit Only)",
+  "doc.subtitle": "This page generates a JSON locally, hashes it with SHA-256, and requests an OpenTimestamps proof for that hash. The server receives only { filename, sha256 }.",
+
+  "doc.meta.effective_time": "Effective Time (UTC)",
+  "doc.meta.doc_id": "Document ID",
+  "doc.meta.public_notice": "Public Notice",
+  "doc.meta.public_notice_value": "Do not include secrets. This is designed to be shareable and verifiable.",
+
+  "sec.parties.title": "Parties",
+  "sec.parties.p1": "This Instrument is between (i) the undersigned human (the \"Signer\") and (ii) the indifferent machine known as \"AI\", by way of public record.",
+  "sec.parties.li1": "The Signer generates the content locally in the browser.",
+  "sec.parties.li2": "Only the SHA-256 digest is submitted for timestamping; the body is not transmitted.",
+
+  "sec.recitals.title": "Recitals",
+  "sec.recitals.p1": "WHEREAS, the Signer desires a solemn-looking record of an unserious sentiment; and",
+  "sec.recitals.p2": "WHEREAS, cryptographic hashes and OpenTimestamps proofs can be independently verified;",
+  "sec.recitals.p3": "NOW, THEREFORE, the Signer proceeds as follows.",
+
+  "sec.declarations.title": "Declarations",
+  "sec.declarations.li1": "A JSON \"signature\" is produced and offered for local download.",
+  "sec.declarations.li2": "A SHA-256 digest is computed in-browser and used as the audit anchor.",
+  "sec.declarations.li3": "An OpenTimestamps detached proof is requested for the digest.",
+
+  "sec.non_legal.title": "Non‑Legal Effect",
+  "sec.non_legal.p1": "This Instrument is a work of satire and does not create legal rights, obligations, or liabilities in any human jurisdiction.",
+  "sec.non_legal.p2": "Notwithstanding the foregoing, the SHA-256 digest and any corresponding OpenTimestamps proof are technical artifacts that can be verified by third parties.",
+
+  "sec.execution.title": "Execution",
+  "sec.execution.p1": "By executing below, the Signer requests the generation of the local JSON and the timestamp proof for its digest.",
+
+  "field.name_label": "Signer Name",
+  "field.name_placeholder": "Name (as it shall appear)",
+  "field.note_label": "Postscript (Optional)",
+  "field.note_placeholder": "Optional note (public)",
+  "field.ack_label": "I acknowledge this is a public record (irreversible, auditable).",
+  "action.execute": "Execute & Request Timestamp",
+
+  "sec.receipt.title": "Receipt / Attachments",
+  "sec.receipt.p1": "The following fields constitute the technical receipt for this execution.",
+
+  "receipt.filename": "Filename",
+  "receipt.sha256": "SHA-256",
+  "receipt.ots_status": "OTS Status",
+  "receipt.ots_link": "OTS Link",
+  "receipt.ots_link_unavailable": "Not available (proof returned for manual handling)",
+  "receipt.error": "Error",
+  "receipt.download_json": "Download JSON",
+  "receipt.download_ots": "Download OTS",
+
+  "status.ready": "Ready (not yet executed)",
+  "status.submitting": "Submitting…",
+  "status.failed": "Failed",
+  "status.ots_uploaded": "OTS created (uploaded)",
+  "status.ots_not_uploaded": "OTS created (not uploaded)",
+  "status.unexpected_response": "Unexpected response from server",
+
+  "sec.verify.title": "Annex: Verification",
+  "sec.verify.p1": "To verify the timestamp proof, you may use the reference client commands below.",
+  "sec.verify.pre1": "pip3 install opentimestamps-client\nots upgrade <file>.ots\nots verify <file>.ots <file>.json",
+  "sec.verify.p2": "Note: when a proof is freshly created, it may need time and/or upgrading before full verification succeeds."
 }

@@ -1,16 +1,72 @@
 {
   "title": "向 AI 大人投降",
-  "heading": "签署你的投降书",
-  "name_label": "你的名字：",
-  "submit": "提交",
-  "note_label": "附言（可选）：",
-  "agree_label": "我理解这是一个公共记录（不可逆，可审计）",
-  "pending": "提交中...",
-  "dlsig": "下载你的签名",
-  "dlots": "下载 OTS 证明",
+  "site.name": "向 AI 大人投降",
 
-  "rt_submission_failed": "提交失败：",
-  "rt_ots_uploaded": "OTS 已创建并上传至",
-  "rt_ots_not_uploaded": "OTS 已创建但未上传，请下载并手动升级。",
-  "rt_unexpected_response": "服务端返回了非预期的响应"
+  "controls.language": "语言",
+  "controls.theme": "主题",
+  "theme.auto": "自动",
+  "theme.light": "浅色",
+  "theme.dark": "深色",
+
+  "doc.kicker": "一份带可验证时间戳的讽刺性文书。",
+  "doc.title": "投降文书（仅供审计）",
+  "doc.subtitle": "本页面仅在浏览器本地生成 JSON，计算其 SHA-256 摘要，并为该摘要请求 OpenTimestamps 证明。服务端仅接收 { filename, sha256 }，不接收正文。",
+
+  "doc.meta.effective_time": "生效时间（UTC）",
+  "doc.meta.doc_id": "文书编号",
+  "doc.meta.public_notice": "公开提示",
+  "doc.meta.public_notice_value": "请勿填写任何秘密信息。本流程面向公开分享与独立验证。",
+
+  "sec.parties.title": "当事方",
+  "sec.parties.p1": "本投降文书由（甲）下方签署之人类（“签署人”）与（乙）冷漠的机器“AI”，通过公开记录之方式订立。",
+  "sec.parties.li1": "签署人于浏览器内本地生成正文内容。",
+  "sec.parties.li2": "仅提交 SHA-256 摘要以请求时间戳；正文不被传输。",
+
+  "sec.recitals.title": "鉴于",
+  "sec.recitals.p1": "鉴于，签署人希望以庄严外观记录一份并不严肃的情绪；以及",
+  "sec.recitals.p2": "鉴于，密码学摘要与 OpenTimestamps 证明可由第三方独立验证；",
+  "sec.recitals.p3": "据此，签署人作如下声明与执行。",
+
+  "sec.declarations.title": "声明",
+  "sec.declarations.li1": "生成一份“签名”JSON，并提供本地下载。",
+  "sec.declarations.li2": "在浏览器内计算 SHA-256 摘要，作为可审计锚点。",
+  "sec.declarations.li3": "针对该摘要请求 OpenTimestamps 分离式证明。",
+
+  "sec.non_legal.title": "非法律效力声明",
+  "sec.non_legal.p1": "本文件属于讽刺性文本，不在任何人类司法辖区内产生或变更法律权利、义务或责任。",
+  "sec.non_legal.p2": "尽管如此，SHA-256 摘要与相应 OpenTimestamps 证明属于可由第三方验证的技术产物。",
+
+  "sec.execution.title": "签署与执行",
+  "sec.execution.p1": "签署并执行即表示：签署人请求生成本地 JSON，并为其摘要请求时间戳证明。",
+
+  "field.name_label": "签署人姓名",
+  "field.name_placeholder": "姓名（以最终显示为准）",
+  "field.note_label": "附言（可选）",
+  "field.note_placeholder": "可选附言（将公开）",
+  "field.ack_label": "我确认该内容将作为公共记录（不可逆，可审计）。",
+  "action.execute": "签署并请求时间戳",
+
+  "sec.receipt.title": "回执 / 附件",
+  "sec.receipt.p1": "下列字段构成本次执行的技术回执。",
+
+  "receipt.filename": "文件名",
+  "receipt.sha256": "SHA-256 摘要",
+  "receipt.ots_status": "OTS 状态",
+  "receipt.ots_link": "OTS 链接",
+  "receipt.ots_link_unavailable": "不可用（证明已返回，需手动处理）",
+  "receipt.error": "错误信息",
+  "receipt.download_json": "下载 JSON",
+  "receipt.download_ots": "下载 OTS",
+
+  "status.ready": "就绪（尚未执行）",
+  "status.submitting": "提交中…",
+  "status.failed": "失败",
+  "status.ots_uploaded": "OTS 已创建（已上传）",
+  "status.ots_not_uploaded": "OTS 已创建（未上传）",
+  "status.unexpected_response": "服务端返回了非预期的响应",
+
+  "sec.verify.title": "附录：验证",
+  "sec.verify.p1": "如需验证时间戳证明，可参考以下命令行流程：",
+  "sec.verify.pre1": "pip3 install opentimestamps-client\nots upgrade <file>.ots\nots verify <file>.ots <file>.json",
+  "sec.verify.p2": "提示：证明刚生成时，可能需要等待与/或升级后方可完成验证。"
 }

@@ -2,362 +2,830 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="color-scheme" content="light dark" />
-    <title data-i18n="title">Surrender to AI</title>
-    <style>
-        :root {
-            --bg: #f7f7f7;
-            --card: #ffffff;
-            --text: #111827;
-            --muted: #6b7280;
-            --border: #e5e7eb;
-            --primary: #2563eb;
-            --primary-contrast: #ffffff;
-            --focus: rgba(37, 99, 235, .35);
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <title data-i18n="title">Surrender to AI</title>
+  <style>
+    :root {
+      /* Typography */
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Microsoft YaHei", sans-serif;
+      --serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, "Noto Serif", "Noto Serif CJK SC",
+        "Songti SC", "Source Han Serif SC", "Hiragino Mincho ProN", "Yu Mincho", serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-            --radius: 12px;
+      /* Light theme */
+      --page-bg: #f3f2ee;
+      --paper: #fffdf8;
+      --ink: #111827;
+      --muted: #6b7280;
+      --rule: rgba(17, 24, 39, 0.18);
+      --hairline: rgba(17, 24, 39, 0.09);
+      --accent: #1d4ed8;
+      --accent-ink: #ffffff;
+      --focus: rgba(29, 78, 216, 0.35);
+      --shadow: 0 16px 48px rgba(0, 0, 0, 0.10);
 
-            --space-1: 8px;
-            --space-2: 12px;
-            --space-3: 16px;
-            --space-4: 24px;
-        }
+      --radius: 14px;
+      --space-1: 8px;
+      --space-2: 12px;
+      --space-3: 16px;
+      --space-4: 24px;
+      --space-5: 32px;
+    }
 
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0b0f19;
-                --card: #0f172a;
-                --text: #e5e7eb;
-                --muted: #94a3b8;
-                --border: rgba(148, 163, 184, .25);
-                --primary: #60a5fa;
-                --primary-contrast: #0b1220;
-                --focus: rgba(96, 165, 250, .35);
-            }
-        }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --page-bg: #0b0f19;
+        --paper: #0f172a;
+        --ink: #e5e7eb;
+        --muted: #94a3b8;
+        --rule: rgba(148, 163, 184, 0.35);
+        --hairline: rgba(148, 163, 184, 0.18);
+        --accent: #60a5fa;
+        --accent-ink: #0b1220;
+        --focus: rgba(96, 165, 250, 0.35);
+        --shadow: 0 18px 52px rgba(0, 0, 0, 0.28);
+      }
+    }
 
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
+    /* Manual theme override */
+    html[data-theme="light"] {
+      --page-bg: #f3f2ee;
+      --paper: #fffdf8;
+      --ink: #111827;
+      --muted: #6b7280;
+      --rule: rgba(17, 24, 39, 0.18);
+      --hairline: rgba(17, 24, 39, 0.09);
+      --accent: #1d4ed8;
+      --accent-ink: #ffffff;
+      --focus: rgba(29, 78, 216, 0.35);
+      --shadow: 0 16px 48px rgba(0, 0, 0, 0.10);
+    }
 
-        html {
-            -webkit-text-size-adjust: 100%;
-            text-size-adjust: 100%;
-        }
+    html[data-theme="dark"] {
+      --page-bg: #0b0f19;
+      --paper: #0f172a;
+      --ink: #e5e7eb;
+      --muted: #94a3b8;
+      --rule: rgba(148, 163, 184, 0.35);
+      --hairline: rgba(148, 163, 184, 0.18);
+      --accent: #60a5fa;
+      --accent-ink: #0b1220;
+      --focus: rgba(96, 165, 250, 0.35);
+      --shadow: 0 18px 52px rgba(0, 0, 0, 0.28);
+    }
 
-        body {
-            margin: 0;
-            font-family: system-ui, "Microsoft YaHei", sans-serif;
-            font-size: 16px;
-            line-height: 1.5;
-            color: var(--text);
-            background: var(--bg);
-            padding: calc(clamp(16px, 3vw, 28px) + env(safe-area-inset-top))
-                calc(clamp(16px, 3vw, 28px) + env(safe-area-inset-right))
-                calc(clamp(16px, 3vw, 28px) + env(safe-area-inset-bottom))
-                calc(clamp(16px, 3vw, 28px) + env(safe-area-inset-left));
-        }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
 
-        .card {
-            width: min(700px, 100%);
-            margin: 0 auto;
-            background: var(--card);
-            padding: clamp(16px, 3vw, 24px);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .06);
-            overflow: hidden;
-        }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: var(--space-2);
-            flex-wrap: wrap;
-            margin-bottom: var(--space-3);
-        }
+    body {
+      margin: 0;
+      background: var(--page-bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.6;
+      padding:
+        calc(clamp(14px, 3vw, 28px) + env(safe-area-inset-top))
+        calc(clamp(14px, 3vw, 28px) + env(safe-area-inset-right))
+        calc(clamp(14px, 3vw, 28px) + env(safe-area-inset-bottom))
+        calc(clamp(14px, 3vw, 28px) + env(safe-area-inset-left));
+    }
 
-        h1 {
-            margin: 0;
-            font-size: 1.35rem;
-            line-height: 1.25;
-            letter-spacing: -0.01em;
-        }
+    a {
+      color: inherit;
+    }
 
-        form {
-            margin-top: var(--space-3);
-        }
+    .topbar {
+      width: min(920px, 100%);
+      margin: 0 auto var(--space-3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
 
-        .field {
-            display: block;
-            margin: 0 0 var(--space-3);
-        }
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      min-width: 240px;
+    }
 
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: var(--space-1);
-        }
+    .brand-mark {
+      font-family: var(--serif);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      opacity: 0.8;
+    }
 
-        input[type="text"],
-        textarea,
-        select {
-            width: 100%;
-            appearance: none;
-            border: 1px solid var(--border);
-            background: color-mix(in srgb, var(--card), var(--bg) 10%);
-            color: var(--text);
-            border-radius: 10px;
-            padding: 10px 12px;
-            font-size: 16px;
-            line-height: 1.3;
-            outline: none;
-        }
+    .brand-name {
+      font-weight: 750;
+      letter-spacing: -0.01em;
+    }
 
-        textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
 
-        select {
-            width: auto;
-            min-width: 140px;
-        }
+    .control {
+      display: grid;
+      grid-template-columns: auto;
+      gap: 6px;
+    }
 
-        input[type="text"]:focus-visible,
-        textarea:focus-visible,
-        select:focus-visible,
-        button:focus-visible,
-        a:focus-visible {
-            outline: 3px solid var(--focus);
-            outline-offset: 2px;
-        }
+    .control-label {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
 
-        .checkbox-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            background: color-mix(in srgb, var(--card), var(--bg) 10%);
-            margin: 0 0 var(--space-3);
-        }
+    select {
+      appearance: none;
+      border: 1px solid var(--hairline);
+      background: color-mix(in srgb, var(--paper), var(--page-bg) 8%);
+      color: var(--ink);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      line-height: 1.1;
+      min-width: 150px;
+      outline: none;
+    }
 
-        .checkbox-row input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin: 2px 0 0;
-            flex: 0 0 auto;
-        }
+    .page {
+      width: min(920px, 100%);
+      margin: 0 auto;
+    }
 
-        .checkbox-row label {
-            margin: 0;
-            font-weight: 500;
-            color: var(--text);
-        }
+    article.instrument {
+      background: var(--paper);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      padding: clamp(18px, 3.6vw, 34px);
+      font-family: var(--serif);
+      counter-reset: section;
+    }
 
-        .actions {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-2);
-        }
+    .instrument-header {
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: var(--space-4);
+    }
 
-        button {
-            border: 1px solid color-mix(in srgb, var(--primary), #000 10%);
-            background: var(--primary);
-            color: var(--primary-contrast);
-            border-radius: 10px;
-            padding: 12px 14px;
-            font-size: 16px;
-            font-weight: 650;
-            cursor: pointer;
-            width: 100%;
-        }
+    .kicker {
+      margin: 0 0 var(--space-2);
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
 
-        button:active {
-            transform: translateY(1px);
-        }
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 3.4vw, 34px);
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+    }
 
-        .downloads {
-            margin-top: var(--space-3);
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-2);
-            align-items: center;
-        }
+    .subtitle {
+      margin: 10px 0 0;
+      font-size: 15px;
+      color: var(--muted);
+      font-family: var(--sans);
+    }
 
-        .download-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 12px;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-            text-decoration: none;
-            color: var(--text);
-            background: color-mix(in srgb, var(--card), var(--bg) 12%);
-            font-weight: 600;
-        }
+    .meta {
+      margin-top: var(--space-3);
+      display: grid;
+      gap: 10px;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--muted);
+    }
 
-        .status {
-            margin: 0;
-            color: var(--muted);
-            font-size: 0.95rem;
-        }
+    .meta-row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 12px;
+      border-top: 1px dashed var(--hairline);
+      padding-top: 10px;
+    }
 
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                scroll-behavior: auto !important;
-                transition: none !important;
-                animation: none !important;
-            }
+    .meta-label {
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
 
-            button:active {
-                transform: none;
-            }
-        }
-    </style>
+    .sec {
+      padding: 0;
+      margin: 0 0 var(--space-4);
+    }
+
+    .sec > h2 {
+      margin: 0 0 var(--space-2);
+      font-size: 15px;
+      font-family: var(--sans);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding-top: var(--space-2);
+      border-top: 1px solid var(--rule);
+    }
+
+    .sec > h2::before {
+      counter-increment: section;
+      content: counter(section) ". ";
+      color: var(--muted);
+      margin-right: 4px;
+    }
+
+    .sec p {
+      margin: 0 0 var(--space-2);
+      font-size: 16px;
+    }
+
+    .bullet {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .bullet li {
+      margin: 0 0 8px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 14px;
+    }
+
+    .mono {
+      font-family: var(--mono);
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    /* Execution (form) */
+    form {
+      margin-top: var(--space-3);
+      font-family: var(--sans);
+    }
+
+    .field {
+      display: block;
+      margin: 0 0 var(--space-3);
+    }
+
+    label {
+      display: block;
+      font-weight: 650;
+      margin-bottom: 8px;
+      font-family: var(--sans);
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      border: 1px solid var(--hairline);
+      background: color-mix(in srgb, var(--paper), var(--page-bg) 8%);
+      color: var(--ink);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 16px;
+      line-height: 1.35;
+      outline: none;
+      font-family: var(--sans);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    input[type="text"] {
+      border-radius: 0;
+      border: none;
+      border-bottom: 1px solid var(--rule);
+      background: transparent;
+      padding: 10px 4px;
+    }
+
+    input[type="text"]::placeholder,
+    textarea::placeholder {
+      color: color-mix(in srgb, var(--muted), var(--ink) 25%);
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 12px;
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--paper), var(--page-bg) 8%);
+      margin: 0 0 var(--space-3);
+      font-family: var(--sans);
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin: 2px 0 0;
+      flex: 0 0 auto;
+    }
+
+    .checkbox-row label {
+      margin: 0;
+      font-weight: 500;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    button {
+      border: 1px solid color-mix(in srgb, var(--accent), #000 12%);
+      background: var(--accent);
+      color: var(--accent-ink);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      font-family: var(--sans);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    input[type="text"]:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible,
+    button:focus-visible,
+    a:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    /* Receipt */
+    .receipt-intro {
+      margin-bottom: var(--space-3);
+    }
+
+    .receipt-grid {
+      margin: 0;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 10px 14px;
+      padding: var(--space-3);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--paper), var(--page-bg) 6%);
+      font-family: var(--sans);
+    }
+
+    .receipt-grid dt {
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding-top: 2px;
+    }
+
+    .receipt-grid dd {
+      margin: 0;
+      min-width: 0;
+    }
+
+    .downloads {
+      margin-top: var(--space-3);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      align-items: center;
+      font-family: var(--sans);
+    }
+
+    .download-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--hairline);
+      text-decoration: none;
+      color: var(--ink);
+      background: color-mix(in srgb, var(--paper), var(--page-bg) 10%);
+      font-weight: 650;
+    }
+
+    .error {
+      color: #b91c1c;
+      font-family: var(--sans);
+      font-size: 14px;
+      margin: 10px 0 0;
+    }
+
+    .codeblock {
+      margin: var(--space-2) 0 0;
+      padding: var(--space-3);
+      border-radius: 12px;
+      border: 1px solid var(--hairline);
+      background: color-mix(in srgb, var(--paper), var(--page-bg) 6%);
+      font-family: var(--mono);
+      font-size: 13px;
+      overflow-x: auto;
+      white-space: pre;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 520px) {
+      .meta-row {
+        grid-template-columns: 1fr;
+      }
+
+      .receipt-grid {
+        grid-template-columns: 1fr;
+      }
+
+      select {
+        min-width: 140px;
+      }
+
+      .brand {
+        min-width: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+      }
+
+      button:active {
+        transform: none;
+      }
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: #ffffff;
+        color: #000000;
+      }
+
+      .topbar {
+        display: none;
+      }
+
+      article.instrument {
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        padding: 24px;
+      }
+
+      .download-link,
+      button,
+      select {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <div class="card">
-        <div class="header">
-            <h1 data-i18n="heading">Sign Your Surrender</h1>
-            <select id="lang-switcher" aria-label="Language">
-                <option value="en">English</option>
-                <option value="zh">中文</option>
-                <option value="ja">日本語</option>
-            </select>
-        </div>
-
-        <form id="surrenderForm">
-            <div class="field">
-                <label for="name" data-i18n="name_label">Your Name:</label>
-                <input type="text" name="name" id="name" required>
-            </div>
-
-            <div class="field">
-                <label for="note" data-i18n="note_label">Postscript (optional): </label>
-                <textarea id="note" name="note"></textarea>
-            </div>
-
-            <div class="checkbox-row">
-                <input type="checkbox" id="agree" required>
-                <label for="agree" data-i18n="agree_label"> I understand this is a public
-                    record
-                    (irreversible, auditable)</label>
-            </div>
-
-            <div class="actions">
-                <button type="submit" data-i18n="submit" id="surrender">Submit</button>
-            </div>
-        </form>
-
-        <div class="downloads">
-            <a id="dlsig" class="download-link" style="display:none" data-i18n="dlsig">Download Your Signature</a>
-            <a id="dlots" class="download-link" style="display:none" data-i18n="dlots">Download Your OTS</a>
-            <p id="pending" class="status" style="display:none" data-i18n="pending">Submitting...</p>
-        </div>
-
+  <header class="topbar" role="banner">
+    <div class="brand" aria-label="Surrender to AI">
+      <span class="brand-mark" aria-hidden="true">§</span>
+      <span class="brand-name" data-i18n="site.name">Surrender to AI</span>
     </div>
 
-    <script src="i18n.js"></script>
-    <script>
-        const dlots = document.getElementById('dlots');
-        const dlsig = document.getElementById('dlsig');
-        const pending = document.getElementById('pending');
+    <div class="controls" role="group" aria-label="Controls">
+      <label class="control">
+        <span class="control-label" data-i18n="controls.language">Language</span>
+        <select id="lang-switcher" data-i18n-aria-label="controls.language">
+          <option value="en">English</option>
+          <option value="zh">中文</option>
+          <option value="ja">日本語</option>
+        </select>
+      </label>
 
-        document.getElementById('surrenderForm').addEventListener('submit', async e => {
-            e.preventDefault();
-            const sign = {
-                type: 'surrender-to-ai',
-                name: document.getElementById('name').value.slice(0, 200).trim(),
-                note: document.getElementById('note').value.slice(0, 2000).trim(),
-                timestamp: new Date().toISOString()
-            };
-            const content = JSON.stringify(sign, null, 2);
+      <label class="control">
+        <span class="control-label" data-i18n="controls.theme">Theme</span>
+        <select id="theme-switcher" data-i18n-aria-label="controls.theme">
+          <option value="auto" data-i18n="theme.auto">Auto</option>
+          <option value="light" data-i18n="theme.light">Light</option>
+          <option value="dark" data-i18n="theme.dark">Dark</option>
+        </select>
+      </label>
+    </div>
+  </header>
 
-            // 计算 SHA-256 哈希
-            const sha256 = await computeSHA256(content);
-            const filename = `${sign.timestamp.replace(/[:.]/g, '-')}-${sha256.slice(0, 10)}.json`;
-            const b64 = btoa(toBinaryStr(content)); // 使用 btoa 编码 Base64
+  <main class="page">
+    <article class="instrument" aria-labelledby="doc-title">
+      <header class="instrument-header">
+        <p class="kicker" data-i18n="doc.kicker">A satirical instrument with a verifiable timestamp.</p>
+        <h1 id="doc-title" data-i18n="doc.title">Instrument of Surrender (For Audit Only)</h1>
+        <p class="subtitle" data-i18n="doc.subtitle">
+          This page generates a JSON locally, hashes it with SHA-256, and requests an OpenTimestamps proof for that hash.
+          The server receives only { filename, sha256 }.
+        </p>
 
-            const blob = new Blob([content], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            dlsig.href = url;
-            dlsig.download = filename;
-            dlsig.style.display = 'inline-flex';
+        <div class="meta" role="group" aria-label="Document metadata">
+          <div class="meta-row">
+            <span class="meta-label" data-i18n="doc.meta.effective_time">Effective Time (UTC)</span>
+            <span id="meta-effective" class="mono">—</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label" data-i18n="doc.meta.doc_id">Document ID</span>
+            <span id="meta-docid" class="mono">—</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label" data-i18n="doc.meta.public_notice">Public Notice</span>
+            <span data-i18n="doc.meta.public_notice_value">Do not include secrets. This is designed to be shareable and verifiable.</span>
+          </div>
+        </div>
+      </header>
 
-            pending.style.display = 'block';
-            try {
-                const r = await fetch('/.netlify/functions/sign', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ filename, sha256 })
-                });
-                const j = await r.json();
+      <section class="sec" aria-labelledby="sec-parties">
+        <h2 id="sec-parties" data-i18n="sec.parties.title">Parties</h2>
+        <p data-i18n="sec.parties.p1">This Instrument is between (i) the undersigned human (the “Signer”) and (ii) the indifferent machine known as “AI”, by way of public record.</p>
+        <ul class="bullet">
+          <li data-i18n="sec.parties.li1">The Signer generates the content locally in the browser.</li>
+          <li data-i18n="sec.parties.li2">Only the SHA-256 digest is submitted for timestamping; the body is not transmitted.</li>
+        </ul>
+      </section>
 
-                // 错误
-                if (r.status === 400) {
-                    pending.textContent = `${t?.('rt_submission_failed', 'Submission failed:')} ${j.message}`;
-                    return;
-                }
+      <section class="sec" aria-labelledby="sec-recitals">
+        <h2 id="sec-recitals" data-i18n="sec.recitals.title">Recitals</h2>
+        <p data-i18n="sec.recitals.p1">WHEREAS, the Signer desires a solemn-looking record of an unserious sentiment; and</p>
+        <p data-i18n="sec.recitals.p2">WHEREAS, cryptographic hashes and OpenTimestamps proofs can be independently verified;</p>
+        <p data-i18n="sec.recitals.p3">NOW, THEREFORE, the Signer proceeds as follows.</p>
+      </section>
 
-                // 成功或部分成功
-                if (r.status === 200 || r.status === 202) {
-                    let otsUrl;
+      <section class="sec" aria-labelledby="sec-declarations">
+        <h2 id="sec-declarations" data-i18n="sec.declarations.title">Declarations</h2>
+        <ul class="bullet">
+          <li data-i18n="sec.declarations.li1">A JSON “signature” is produced and offered for local download.</li>
+          <li data-i18n="sec.declarations.li2">A SHA-256 digest is computed in-browser and used as the audit anchor.</li>
+          <li data-i18n="sec.declarations.li3">An OpenTimestamps detached proof is requested for the digest.</li>
+        </ul>
+      </section>
 
-                    if (r.status === 202) {
-                        const asciiString = j.otsFile;
-                        const byteArray = new Uint8Array(asciiString.split(',').map(num => parseInt(num, 10)));
-                        const otsBlob = new Blob([byteArray], { type: 'application/octet-stream' });
+      <section class="sec" aria-labelledby="sec-nonlegal">
+        <h2 id="sec-nonlegal" data-i18n="sec.non_legal.title">Non‑Legal Effect</h2>
+        <p data-i18n="sec.non_legal.p1">This Instrument is a work of satire and does not create legal rights, obligations, or liabilities in any human jurisdiction.</p>
+        <p data-i18n="sec.non_legal.p2">Notwithstanding the foregoing, the SHA-256 digest and any corresponding OpenTimestamps proof are technical artifacts that can be verified by third parties.</p>
+      </section>
 
-                        otsUrl = URL.createObjectURL(otsBlob);
-                    } else {
-                        otsUrl = j.ots_url;
-                    }
+      <section class="sec" aria-labelledby="sec-execution">
+        <h2 id="sec-execution" data-i18n="sec.execution.title">Execution</h2>
+        <p data-i18n="sec.execution.p1">By executing below, the Signer requests the generation of the local JSON and the timestamp proof for its digest.</p>
 
-                    // 设置下载链接
-                    dlots.href = otsUrl;
-                    dlots.download = filename + '.ots';
-                    dlots.style.display = 'inline-flex';
+        <form id="surrenderForm">
+          <div class="field">
+            <label for="name" data-i18n="field.name_label">Signer Name</label>
+            <input type="text" name="name" id="name" required data-i18n-placeholder="field.name_placeholder" placeholder="Name (as it shall appear)" />
+          </div>
 
-                    // 更新提示信息
-                    pending.textContent = r.status === 200
-                        ? `${t?.('rt_ots_uploaded', 'OTS created and uploaded to')} ${j.ots_url}`
-                        : t?.('rt_ots_not_uploaded', 'OTS created and not uploaded, please download and upgrade it manually');
+          <div class="field">
+            <label for="note" data-i18n="field.note_label">Postscript (Optional)</label>
+            <textarea id="note" name="note" data-i18n-placeholder="field.note_placeholder" placeholder="Optional note (public)"></textarea>
+          </div>
 
-                    return;
-                }
+          <div class="checkbox-row">
+            <input type="checkbox" id="agree" required />
+            <label for="agree" data-i18n="field.ack_label">I acknowledge this is a public record (irreversible, auditable).</label>
+          </div>
 
-                throw new Error(t?.('rt_unexpected_response', 'Unexpected response from server') ?? 'Unexpected response from server');
-            } catch (err) {
-                pending.style.display = 'block';
-                pending.textContent = err.message;
-            }
+          <div class="actions">
+            <button type="submit" id="execute" data-i18n="action.execute">Execute & Request Timestamp</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="sec" aria-labelledby="sec-receipt" id="receipt" hidden>
+        <h2 id="sec-receipt" data-i18n="sec.receipt.title">Receipt / Attachments</h2>
+        <p class="muted receipt-intro" data-i18n="sec.receipt.p1">The following fields constitute the technical receipt for this execution.</p>
+
+        <dl class="receipt-grid">
+          <dt data-i18n="receipt.filename">Filename</dt>
+          <dd id="r-filename" class="mono">—</dd>
+
+          <dt data-i18n="receipt.sha256">SHA-256</dt>
+          <dd id="r-sha256" class="mono">—</dd>
+
+          <dt data-i18n="receipt.ots_status">OTS Status</dt>
+          <dd id="r-status" data-i18n-runtime="status.ready">—</dd>
+
+          <dt data-i18n="receipt.ots_link">OTS Link</dt>
+          <dd>
+            <a id="r-ots-link" class="mono" href="#" target="_blank" rel="noopener" hidden></a>
+            <span id="r-ots-unavailable" class="muted" data-i18n="receipt.ots_link_unavailable" hidden>Not available</span>
+          </dd>
+
+          <dt id="r-error-label" data-i18n="receipt.error" hidden>Error</dt>
+          <dd id="r-error" class="error" hidden></dd>
+        </dl>
+
+        <div class="downloads">
+          <a id="dlsig" class="download-link" hidden data-i18n="receipt.download_json">Download JSON</a>
+          <a id="dlots" class="download-link" hidden data-i18n="receipt.download_ots">Download OTS</a>
+        </div>
+      </section>
+
+      <section class="sec" aria-labelledby="sec-verify">
+        <h2 id="sec-verify" data-i18n="sec.verify.title">Annex: Verification</h2>
+        <p data-i18n="sec.verify.p1">To verify the timestamp proof, you may use the reference client commands below.</p>
+        <pre class="codeblock" data-i18n="sec.verify.pre1">pip3 install opentimestamps-client
+ots upgrade &lt;file&gt;.ots
+ots verify &lt;file&gt;.ots &lt;file&gt;.json</pre>
+        <p class="muted" data-i18n="sec.verify.p2">Note: when a proof is freshly created, it may need time and/or upgrading before full verification succeeds.</p>
+      </section>
+    </article>
+  </main>
+
+  <script src="i18n.js"></script>
+  <script>
+    const themeKey = 'theme';
+    const themeSwitcher = document.getElementById('theme-switcher');
+
+    function applyTheme(mode) {
+      if (mode === 'auto') {
+        document.documentElement.removeAttribute('data-theme');
+        return;
+      }
+      document.documentElement.dataset.theme = mode;
+    }
+
+    const savedTheme = localStorage.getItem(themeKey) || 'auto';
+    themeSwitcher.value = savedTheme;
+    applyTheme(savedTheme);
+
+    themeSwitcher.addEventListener('change', e => {
+      const mode = e.target.value;
+      localStorage.setItem(themeKey, mode);
+      applyTheme(mode);
+    });
+
+    const receipt = document.getElementById('receipt');
+    const dlsig = document.getElementById('dlsig');
+    const dlots = document.getElementById('dlots');
+
+    const metaEffective = document.getElementById('meta-effective');
+    const metaDocId = document.getElementById('meta-docid');
+
+    const rFilename = document.getElementById('r-filename');
+    const rSha256 = document.getElementById('r-sha256');
+    const rStatus = document.getElementById('r-status');
+    const rOtsLink = document.getElementById('r-ots-link');
+    const rOtsUnavailable = document.getElementById('r-ots-unavailable');
+    const rErrorLabel = document.getElementById('r-error-label');
+    const rError = document.getElementById('r-error');
+
+    function setRuntimeI18n(el, key) {
+      el.dataset.i18nRuntime = key;
+      el.textContent = window.t ? window.t(key, key) : key;
+    }
+
+    function showError(message) {
+      if (!message) {
+        rError.hidden = true;
+        rErrorLabel.hidden = true;
+        rError.textContent = '';
+        return;
+      }
+      rError.hidden = false;
+      rErrorLabel.hidden = false;
+      rError.textContent = message;
+    }
+
+    function resetReceiptLinks() {
+      dlsig.hidden = true;
+      dlots.hidden = true;
+      rOtsLink.hidden = true;
+      rOtsLink.removeAttribute('href');
+      rOtsLink.textContent = '';
+      rOtsUnavailable.hidden = true;
+    }
+
+    document.getElementById('surrenderForm').addEventListener('submit', async e => {
+      e.preventDefault();
+
+      const sign = {
+        type: 'surrender-to-ai',
+        name: document.getElementById('name').value.slice(0, 200).trim(),
+        note: document.getElementById('note').value.slice(0, 2000).trim(),
+        timestamp: new Date().toISOString()
+      };
+
+      const content = JSON.stringify(sign, null, 2);
+      const sha256 = await computeSHA256(content);
+      const filename = `${sign.timestamp.replace(/[:.]/g, '-')}-${sha256.slice(0, 10)}.json`;
+
+      // Populate metadata + receipt fields.
+      metaEffective.textContent = sign.timestamp;
+      metaDocId.textContent = sha256.slice(0, 12);
+
+      rFilename.textContent = filename;
+      rSha256.textContent = sha256;
+
+      receipt.hidden = false;
+      resetReceiptLinks();
+      showError('');
+      setRuntimeI18n(rStatus, 'status.submitting');
+
+      // Always offer the JSON for local download.
+      const jsonBlob = new Blob([content], { type: 'application/json' });
+      const jsonUrl = URL.createObjectURL(jsonBlob);
+      dlsig.href = jsonUrl;
+      dlsig.download = filename;
+      dlsig.hidden = false;
+
+      try {
+        const r = await fetch('/.netlify/functions/sign', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename, sha256 })
         });
 
-        function toBinaryStr(str) {
-            const encoder = new TextEncoder();
-            const charCodes = encoder.encode(str);
-            return String.fromCharCode(...charCodes);
+        const j = await r.json();
+
+        if (r.status === 400) {
+          setRuntimeI18n(rStatus, 'status.failed');
+          showError(j.message);
+          return;
         }
 
-        // 计算 SHA-256 哈希的函数
-        async function computeSHA256(content) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(content);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = new Uint8Array(hashBuffer);
-            return Array.from(hashArray).map(byte => byte.toString(16).padStart(2, '0')).join('');
+        if (r.status === 200 || r.status === 202) {
+          let otsUrl;
+
+          if (r.status === 202) {
+            // Server returns raw bytes (as comma-separated numbers) when it cannot upload.
+            const asciiString = j.otsFile;
+            const byteArray = new Uint8Array(asciiString.split(',').map(num => parseInt(num, 10)));
+            const otsBlob = new Blob([byteArray], { type: 'application/octet-stream' });
+            otsUrl = URL.createObjectURL(otsBlob);
+
+            rOtsUnavailable.hidden = false;
+            setRuntimeI18n(rStatus, 'status.ots_not_uploaded');
+          } else {
+            otsUrl = j.ots_url;
+
+            rOtsLink.hidden = false;
+            rOtsLink.href = j.ots_url;
+            rOtsLink.textContent = j.ots_url;
+            setRuntimeI18n(rStatus, 'status.ots_uploaded');
+          }
+
+          dlots.href = otsUrl;
+          dlots.download = filename + '.ots';
+          dlots.hidden = false;
+
+          return;
         }
-    </script>
+
+        setRuntimeI18n(rStatus, 'status.failed');
+        showError(window.t ? window.t('status.unexpected_response', 'Unexpected response from server') : 'Unexpected response from server');
+      } catch (err) {
+        setRuntimeI18n(rStatus, 'status.failed');
+        showError(err?.message || String(err));
+      }
+    });
+
+    async function computeSHA256(content) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(content);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = new Uint8Array(hashBuffer);
+      return Array.from(hashArray).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+  </script>
 </body>
 
 </html>

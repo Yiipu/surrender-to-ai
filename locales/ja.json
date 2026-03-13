@@ -1,16 +1,72 @@
 {
   "title": "AIに降伏する",
-  "heading": "あなたの降伏文書に署名してください",
-  "name_label": "あなたの名前は:",
-  "submit": "提出する",
-  "note_label": "追記（任意）:",
-  "agree_label": "これは公的記録であることを理解しています（取り消し不可、監査可能）",
-  "pending": "提出中...",
-  "dlsig": "あなたの署名をダウンロード",
-  "dlots": "あなたのOTSをダウンロード",
+  "site.name": "AIに降伏する",
 
-  "rt_submission_failed": "送信に失敗しました:",
-  "rt_ots_uploaded": "OTS を作成し、次へアップロードしました",
-  "rt_ots_not_uploaded": "OTS は作成されましたがアップロードできませんでした。ダウンロードして手動でアップグレードしてください。",
-  "rt_unexpected_response": "サーバーから予期しない応答が返されました"
+  "controls.language": "言語",
+  "controls.theme": "テーマ",
+  "theme.auto": "自動",
+  "theme.light": "ライト",
+  "theme.dark": "ダーク",
+
+  "doc.kicker": "検証可能なタイムスタンプを伴う、風刺的な文書。",
+  "doc.title": "降伏文書（監査目的のみ）",
+  "doc.subtitle": "本ページはブラウザ内で JSON をローカル生成し、SHA-256 を算出し、そのハッシュに対して OpenTimestamps 証明を要求します。サーバーが受け取るのは { filename, sha256 } のみで、本文は送信されません。",
+
+  "doc.meta.effective_time": "発効時刻（UTC）",
+  "doc.meta.doc_id": "文書ID",
+  "doc.meta.public_notice": "公開に関する注意",
+  "doc.meta.public_notice_value": "秘密情報を含めないでください。本手続は共有と独立検証を前提としています。",
+
+  "sec.parties.title": "当事者",
+  "sec.parties.p1": "本降伏文書は、（i）下記署名者たる人間（「署名者」）と（ii）無関心な機械「AI」との間で、公開記録として成立するものとします。",
+  "sec.parties.li1": "署名者は本文をブラウザ内でローカル生成します。",
+  "sec.parties.li2": "タイムスタンプ要求に送信されるのは SHA-256 ダイジェストのみであり、本文は送信されません。",
+
+  "sec.recitals.title": "前文（鑑み）",
+  "sec.recitals.p1": "鑑み、署名者は厳粛な体裁で、あまり厳粛ではない感情を記録したい。さらに",
+  "sec.recitals.p2": "鑑み、暗号学的ハッシュおよび OpenTimestamps 証明は第三者により独立検証が可能である。",
+  "sec.recitals.p3": "よって、署名者は以下のとおり実行します。",
+
+  "sec.declarations.title": "宣言",
+  "sec.declarations.li1": "「署名」JSON を生成し、ローカルダウンロードとして提供します。",
+  "sec.declarations.li2": "ブラウザ内で SHA-256 を算出し、監査用のアンカーとします。",
+  "sec.declarations.li3": "当該ダイジェストに対し、OpenTimestamps の分離証明を要求します。",
+
+  "sec.non_legal.title": "法的効力の否認",
+  "sec.non_legal.p1": "本書面は風刺作品であり、いかなる人間の法域においても法的権利・義務・責任を発生または変更しません。",
+  "sec.non_legal.p2": "ただし、SHA-256 ダイジェストおよび対応する OpenTimestamps 証明は、第三者が検証可能な技術的成果物です。",
+
+  "sec.execution.title": "署名・実行",
+  "sec.execution.p1": "以下を実行することにより、署名者はローカル JSON の生成およびそのダイジェストに対するタイムスタンプ証明の作成を要求します。",
+
+  "field.name_label": "署名者名",
+  "field.name_placeholder": "氏名（表示される形式で）",
+  "field.note_label": "追記（任意）",
+  "field.note_placeholder": "追記（公開されます）",
+  "field.ack_label": "これは公開記録であること（取消不可・監査可能）を確認します。",
+  "action.execute": "署名してタイムスタンプを要求",
+
+  "sec.receipt.title": "受領書 / 添付",
+  "sec.receipt.p1": "以下は本実行に関する技術的受領情報です。",
+
+  "receipt.filename": "ファイル名",
+  "receipt.sha256": "SHA-256",
+  "receipt.ots_status": "OTS 状態",
+  "receipt.ots_link": "OTS リンク",
+  "receipt.ots_link_unavailable": "利用不可（証明が返却され、手動対応が必要です）",
+  "receipt.error": "エラー",
+  "receipt.download_json": "JSON をダウンロード",
+  "receipt.download_ots": "OTS をダウンロード",
+
+  "status.ready": "準備完了（未実行）",
+  "status.submitting": "送信中…",
+  "status.failed": "失敗",
+  "status.ots_uploaded": "OTS 作成済み（アップロード済み）",
+  "status.ots_not_uploaded": "OTS 作成済み（未アップロード）",
+  "status.unexpected_response": "サーバーから予期しない応答が返されました",
+
+  "sec.verify.title": "付録：検証",
+  "sec.verify.p1": "タイムスタンプ証明の検証には、以下の参照コマンドをご利用ください。",
+  "sec.verify.pre1": "pip3 install opentimestamps-client\nots upgrade <file>.ots\nots verify <file>.ots <file>.json",
+  "sec.verify.p2": "注：生成直後の証明は、時間経過やアップグレード後に検証が成功する場合があります。"
 }
