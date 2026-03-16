@@ -1,50 +1,59 @@
-const { Octokit } = require("@octokit/rest");
 const OpenTimestamps = require("opentimestamps");
 
-const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-const OWNER = process.env.GITHUB_OWNER;
-const REPO = process.env.GITHUB_REPO;
-const BRANCH = process.env.GITHUB_BRANCH || 'main';
+function json(statusCode, body) {
+  return {
+    statusCode,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  };
+}
+
+function isHexSha256(s) {
+  return typeof s === "string" && /^[0-9a-fA-F]{64}$/.test(s);
+}
 
 exports.handler = async (event) => {
-    if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
-    const body = JSON.parse(event.body);
-    const filename = body.filename;
-    const sha256 = body.sha256;
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, body: "Method Not Allowed" };
+  }
 
-    let otsBytes;
+  let body;
+  try {
+    body = JSON.parse(event.body || "{}");
+  } catch {
+    return json(400, { message: "Invalid JSON body" });
+  }
 
-    try {
-        // OpenTimestamps 证明
-        const digest = Buffer.from(sha256, "hex");
-        const detached = OpenTimestamps.DetachedTimestampFile.fromHash(
-            new OpenTimestamps.Ops.OpSHA256(),
-            digest
-        );
-        await OpenTimestamps.stamp(detached);
-        otsBytes = detached.serializeToBytes();
-    } catch (err) {
-        console.error(err);
-        return { statusCode: 400, body: JSON.stringify({ message: err.message }) };
-    }
+  const filename = body.filename;
+  const sha256 = body.sha256;
 
-    try {
-        const otsPath = `ots/${filename}.ots`;
-        // 提交 OTS 文件
-        await octokit.rest.repos.createOrUpdateFileContents({
-            owner: OWNER, repo: REPO, path: otsPath,
-            message: `add ots proof for ${sha256.slice(0, 10)}`,
-            content: Buffer.from(otsBytes).toString('base64'), branch: BRANCH,
-            committer: { name: 'Surrender Bot', email: 'no-reply@example.com' }
-        });
+  if (typeof filename !== "string" || filename.length === 0) {
+    return json(400, { message: "Invalid filename" });
+  }
+  if (!isHexSha256(sha256)) {
+    return json(400, { message: "Invalid sha256 (expected 64 hex chars)" });
+  }
 
-        const ots_url = `https://github.com/${OWNER}/${REPO}/blob/${BRANCH}/${otsPath}`;
-        return {
-            statusCode: 200, body: JSON.stringify({ ots_url })
-        };
-    } catch (err) {
-        console.error(err);
-        // 上传错误时，将 OTS 文件返回给用户
-        return { statusCode: 202, body: JSON.stringify({ message: err.message, otsFile: otsBytes.toString("base64") }) };
-    }
+  try {
+    const digest = Buffer.from(sha256, "hex");
+    const detached = OpenTimestamps.DetachedTimestampFile.fromHash(
+      new OpenTimestamps.Ops.OpSHA256(),
+      digest
+    );
+
+    await OpenTimestamps.stamp(detached);
+
+    const otsBytes = detached.serializeToBytes();
+    const otsB64 = Buffer.from(otsBytes).toString("base64");
+
+    return json(200, {
+      filename,
+      sha256,
+      ots_b64: otsB64,
+      encoding: "base64"
+    });
+  } catch (err) {
+    console.error(err);
+    return json(500, { message: err?.message || String(err) });
+  }
 };
